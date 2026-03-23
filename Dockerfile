@@ -1,22 +1,11 @@
-FROM nginx:alpine
+FROM python:3.9-slim
 
-COPY index.html /usr/share/nginx/html/index.html
+WORKDIR /app
 
-# Создаём файл hostname при старте контейнера
-RUN echo '#!/bin/sh' > /docker-entrypoint.d/40-generate-hostname.sh && \
-    echo 'echo $HOSTNAME > /usr/share/nginx/html/hostname.txt' >> /docker-entrypoint.d/40-generate-hostname.sh && \
-    chmod +x /docker-entrypoint.d/40-generate-hostname.sh
+RUN pip install flask redis
 
-# Настраиваем nginx
-RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
-    echo '    listen 80;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    server_name _;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    root /usr/share/nginx/html;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    index index.html;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    location /hostname {' >> /etc/nginx/conf.d/default.conf && \
-    echo '        alias /usr/share/nginx/html/hostname.txt;' >> /etc/nginx/conf.d/default.conf && \
-    echo '        add_header Content-Type text/plain;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    }' >> /etc/nginx/conf.d/default.conf && \
-    echo '}' >> /etc/nginx/conf.d/default.conf
+COPY app.py .
 
-EXPOSE 80
+EXPOSE 5000
+
+CMD ["python", "app.py"]

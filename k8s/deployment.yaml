@@ -14,12 +14,18 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: nginx
+      - name: myapp
         image: harbor.black2swan.ru/myapp/myapp:latest
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         env:
         - name: HOSTNAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10

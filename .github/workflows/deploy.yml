@@ -3,12 +3,25 @@ name: Build and Deploy
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+          mkdir -p $HOME/.kube
+      
+      - name: Setup kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+          sed -i 's/127.0.0.1/192.168.0.7/g' $HOME/.kube/config
       
       - name: Build image
         run: docker build -t harbor.black2swan.ru/myapp/myapp:${{ github.sha }} .

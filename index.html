@@ -1,38 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>My K3s App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyApp | K3s Demo</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Анимированные круги на фоне */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             text-align: center;
-            margin-top: 50px;
+            max-width: 600px;
+            width: 90%;
+            z-index: 10;
+            animation: fadeIn 0.8s ease-out;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.9);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            color: #2a5298;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .badge {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.4em;
+            font-weight: normal;
+            letter-spacing: 1px;
         }
-        .container {
-            background: rgba(255,255,255,0.1);
+
+        .pod-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            padding: 20px;
             border-radius: 20px;
-            padding: 30px;
-            display: inline-block;
+            margin: 30px 0;
+            border: 1px solid rgba(0,0,0,0.05);
         }
-        .pod {
-            font-size: 14px;
+
+        .pod-label {
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .pod-name {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #2a5298;
+            font-weight: bold;
+            word-break: break-all;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8em;
+            margin: 20px 0;
+        }
+
+        .info-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            background: rgba(42,82,152,0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.85em;
+            color: #2a5298;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.75em;
+            color: #888;
+        }
+
+        .git-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #24292e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.8em;
             margin-top: 20px;
-            opacity: 0.8;
+            transition: transform 0.2s;
+        }
+
+        .git-badge:hover {
+            transform: translateY(-2px);
+        }
+
+        button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1e3c72;
+            transform: scale(1.05);
+        }
+
+        .counter {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #764ba2;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 Hello from K3s!</h1>
-        <p>My new application in Kubernetes</p>
-        <div class="pod">Pod: <span id="pod-name">loading...</span></div>
+    <div class="bg-circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+    <div class="bg-circle" style="width: 200px; height: 200px; bottom: -50px; right: -50px; animation-delay: -5s;"></div>
+    <div class="bg-circle" style="width: 150px; height: 150px; top: 50%; left: 80%; animation-duration: 15s;"></div>
+
+    <div class="card">
+        <h1>
+            🚀 MyApp
+            <span class="badge">v2.0</span>
+        </h1>
+        <p style="color: #666; margin-bottom: 20px;">Running on Kubernetes K3s cluster</p>
+
+        <div class="pod-card">
+            <div class="pod-label">📍 CURRENT POD</div>
+            <div class="pod-name" id="pod-name">Loading...</div>
+        </div>
+
+        <div class="status">✅ Cluster Status: Healthy</div>
+
+        <div class="info-grid">
+            <div class="info-item">🔄 Auto Deploy via GitHub Actions</div>
+            <div class="info-item">📦 Harbor Registry</div>
+            <div class="info-item">🔒 HTTPS (Let's Encrypt)</div>
+        </div>
+
+        <button onclick="refreshPod()">🔄 Refresh Pod Info</button>
+        <div id="click-counter" class="counter" style="margin-top: 15px;"></div>
+
+        <a href="https://github.com/BlackSwanXQ/myapp" target="_blank" class="git-badge">
+            <span>📁</span> View on GitHub
+        </a>
+
+        <div class="footer">
+            Powered by K3s • Ingress-Nginx • cert-manager • MetalLB
+            <br>
+            <span id="timestamp"></span>
+        </div>
     </div>
+
     <script>
-        fetch('/hostname')
-            .then(res => res.text())
-            .then(data => document.getElementById('pod-name').textContent = data);
+        let clickCount = 0;
+
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('timestamp').innerText = '🕐 ' + now.toLocaleString();
+        }
+
+        function fetchPodName() {
+            fetch('/hostname')
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('pod-name').innerText = data;
+                })
+                .catch(() => {
+                    document.getElementById('pod-name').innerText = 'myapp-pod';
+                });
+        }
+
+        function refreshPod() {
+            clickCount++;
+            document.getElementById('click-counter').innerText = '🖱️ Refresh clicked: ' + clickCount + ' times';
+            fetchPodName();
+        }
+
+        fetchPodName();
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+        setInterval(fetchPodName, 5000);
     </script>
 </body>
 </html>

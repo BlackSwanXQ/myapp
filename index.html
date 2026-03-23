@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My K3s App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            display: inline-block;
+        }
+        .pod {
+            font-size: 14px;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Hello from K3s!</h1>
+        <p>My new application in Kubernetes</p>
+        <div class="pod">Pod: <span id="pod-name">loading...</span></div>
+    </div>
+    <script>
+        fetch('/hostname')
+            .then(res => res.text())
+            .then(data => document.getElementById('pod-name').textContent = data);
+    </script>
+</body>
+</html>

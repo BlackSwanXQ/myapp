@@ -1,13 +1,19 @@
 FROM nginx:alpine
 
-COPY index.html /usr/share/nginx/html/index.html
+# Копируем статическую страницу
+COPY index.html /usr/share/nginx/html/index.html.template
 
-# Создаём скрипт для вывода hostname
+# Создаём скрипт для запуска nginx с подстановкой переменных
+RUN echo '#!/bin/sh' > /docker-entrypoint.d/40-render-template.sh && \
+    echo 'envsubst '\''$HOSTNAME'\'' < /usr/share/nginx/html/index.html.template > /usr/share/nginx/html/index.html' >> /docker-entrypoint.d/40-render-template.sh && \
+    chmod +x /docker-entrypoint.d/40-render-template.sh
+
+# Создаём эндпоинт /hostname который возвращает HOSTNAME
 RUN echo '#!/bin/sh' > /usr/share/nginx/html/hostname.sh && \
     echo 'echo $HOSTNAME' >> /usr/share/nginx/html/hostname.sh && \
     chmod +x /usr/share/nginx/html/hostname.sh
 
-# Настраиваем nginx: для /hostname запускаем скрипт
+# Настраиваем nginx
 RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
     echo '    listen 80;' >> /etc/nginx/conf.d/default.conf && \
     echo '    server_name _;' >> /etc/nginx/conf.d/default.conf && \

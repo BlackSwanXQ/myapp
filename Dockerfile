@@ -2,12 +2,12 @@ FROM nginx:alpine
 
 COPY index.html /usr/share/nginx/html/index.html
 
-# Создаём entrypoint который записывает HOSTNAME в файл
+# Создаём файл hostname при старте контейнера
 RUN echo '#!/bin/sh' > /docker-entrypoint.d/40-generate-hostname.sh && \
     echo 'echo $HOSTNAME > /usr/share/nginx/html/hostname.txt' >> /docker-entrypoint.d/40-generate-hostname.sh && \
     chmod +x /docker-entrypoint.d/40-generate-hostname.sh
 
-# Настраиваем nginx отдавать этот файл
+# Настраиваем nginx
 RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
     echo '    listen 80;' >> /etc/nginx/conf.d/default.conf && \
     echo '    server_name _;' >> /etc/nginx/conf.d/default.conf && \

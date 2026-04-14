@@ -1,5 +1,4 @@
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: myapp
@@ -14,6 +13,8 @@ spec:
       labels:
         app: myapp
     spec:
+      imagePullSecrets:
+      - name: harbor-secret
       containers:
       - name: myapp
         image: harbor.black2swan.ru/myapp/myapp:latest
@@ -25,9 +26,19 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         livenessProbe:
           httpGet:
             path: /health
             port: 5000
-          initialDelaySeconds: 10
+          initialDelaySeconds: 30
           periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5

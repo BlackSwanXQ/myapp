@@ -122,7 +122,7 @@ HTML = '''
 </head>
 <body>
     <div class="card">
-        <h1>🚀 MyApp <span class="badge">v6.3</span></h1>
+        <h1>🚀 MyApp <span class="badge">v6.4</span></h1>
         <p>Running on Kubernetes K3s cluster with Redis</p>
 
         <div class="pod-card">

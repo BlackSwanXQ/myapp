@@ -122,13 +122,15 @@ HTML = '''
 </head>
 <body>
     <div class="card">
-
-        <h1>🚀 MyApp <span class="badge">v6.2</span></h1>
+        <h1>🚀 MyApp <span class="badge">v6.3</span></h1>
         <p>Running on Kubernetes K3s cluster with Redis</p>
 
         <div class="pod-card">
             <div style="margin-bottom: 10px;">📍 CURRENT POD</div>
             <div class="pod-name" id="pod-name">Loading...</div>
+            <div style="margin-top: 10px; font-size: 0.85em; color: #666;">
+                🖥️ Node: <span id="node-name">Loading...</span>
+            </div>
         </div>
 
         <div class="counter" id="counter">Loading...</div>
@@ -166,6 +168,7 @@ HTML = '''
                 .then(data => {
                     document.getElementById('counter').innerText = '👁️ Visits: ' + data.visits;
                     document.getElementById('pod-name').innerText = data.pod;
+                    document.getElementById('node-name').innerText = data.node;
                 })
                 .catch(() => {
                     document.getElementById('counter').innerText = '❌ Redis connection error';
@@ -188,9 +191,11 @@ def index():
 @app.route('/api/stats')
 def stats():
     visits = redis.incr('visits')
+    node_name = os.environ.get('NODE_NAME', 'unknown')
     return jsonify({
         'visits': visits,
-        'pod': socket.gethostname()
+        'pod': socket.gethostname(),
+        'node': node_name
     })
 
 @app.route('/health')

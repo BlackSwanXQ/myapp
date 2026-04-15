@@ -122,10 +122,10 @@ HTML = '''
 </head>
 <body>
     <div class="card">
-        <h1>ClasterMonitoring <span class="badge">v6.5</span></h1>
+        <h1>ClasterMonitoring <span class="badge">v6.6</span></h1>
 
         <div class="pod-card">
-            <div style="margin-bottom: 10px;"> CURRENT POD</div>
+            <div style="margin-bottom: 10px;"> current pod</div>
             <div class="pod-name" id="pod-name">Loading...</div>
             <div style="margin-top: 10px; font-size: 0.85em; color: #666;">
                 🖥️ Node: <span id="node-name">Loading...</span>

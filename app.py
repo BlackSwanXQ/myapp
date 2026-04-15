@@ -122,7 +122,7 @@ HTML = '''
 </head>
 <body>
     <div class="card">
-        <h1>ClasterMonitoring <span class="badge">v6.6</span></h1>
+        <h1>ClasterMonitoring <span class="badge">v6.7</span></h1>
 
         <div class="pod-card">
             <div style="margin-bottom: 10px;"> current pod</div>
@@ -137,9 +137,6 @@ HTML = '''
         <div class="status">✅ Cluster Status: Healthy</div>
 
         <div class="info-grid">
-            <div class="info-item">🔄 Auto Deploy</div>
-            <div class="info-item">📦 Harbor Registry</div>
-            <div class="info-item">🔒 HTTPS</div>
             <div class="info-item">💾 Redis Storage</div>
         </div>
 

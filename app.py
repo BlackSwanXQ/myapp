@@ -122,11 +122,10 @@ HTML = '''
 </head>
 <body>
     <div class="card">
-        <h1>🚀 MyApp <span class="badge">v6.4</span></h1>
-        <p>Running on Kubernetes K3s cluster with Redis</p>
+        <h1>ClasterMonitoring <span class="badge">v6.5</span></h1>
 
         <div class="pod-card">
-            <div style="margin-bottom: 10px;">📍 CURRENT POD</div>
+            <div style="margin-bottom: 10px;"> CURRENT POD</div>
             <div class="pod-name" id="pod-name">Loading...</div>
             <div style="margin-top: 10px; font-size: 0.85em; color: #666;">
                 🖥️ Node: <span id="node-name">Loading...</span>

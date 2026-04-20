@@ -122,7 +122,7 @@ HTML = '''
 </head>
 <body>
     <div class="card">
-        <h1>ClasterMonitoring <span class="badge">v6.8</span></h1>
+        <h1>ClasterMonitoring <span class="badge">v6.9</span></h1>
 
         <div class="pod-card">
             <div style="margin-bottom: 10px;"> current pod</div>
